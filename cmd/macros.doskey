@@ -1,0 +1,12 @@
+cd="%LC_HOME%\cmd\cd.cmd" $*
+mkdir="%LC_HOME%\cmd\mkdir.cmd" $*
+rmdir="%LC_HOME%\cmd\rmdir.cmd" $*
+date="%LC_HOME%\cmd\date.cmd" $*
+find="%LC_HOME%\cmd\shadow\find.cmd" $*
+sort="%LC_HOME%\cmd\shadow\sort.cmd" $*
+timeout="%LC_HOME%\cmd\shadow\timeout.cmd" $*
+sudo="%LC_HOME%\bin\sudo.cmd" $*
+netstat="%LC_HOME%\cmd\lc.cmd" netstat $*
+shutdown="%LC_HOME%\cmd\lc.cmd" shutdown $*
+hostname="%LC_HOME%\cmd\lc.cmd" hostname $*
+ping="%LC_HOME%\cmd\lc.cmd" ping $*
