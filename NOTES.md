@@ -24,7 +24,15 @@ Windows port of `..\LinuxCompat` (macOS zsh). Linux/bash commands in Windows Pow
 - `cmd\init.cmd` AutoRun (skips `cmd /c`), `cmd\macros.doskey`, `cmd\shadow\` (find/sort/timeout),
   `cmd\builtins\` (copied to bin). `bin\` is GENERATED: `tools\gen-shims.ps1` (install runs it).
 
+- 2026-11-12 prompt (asked the user): Git Bash look in both shells (user@HOST MINGW64 /e/path (branch),
+  `$ ` on the next line). `lib\prompt.ps1` (global:prompt) and `cmd\prompt.cmd`; both read .git
+  themselves (no git.exe; worktree .git files, detached, |REBASE/|MERGING/... handled). cmd has no prompt
+  hook, so the user chose macros over Clink: init.cmd + the cd/chdir/pushd/popd/git/a:..z: macros
+  recompute PROMPT. Stale until the next of those if something else switches branch/dir (e.g. a .bat
+  doing cd). `linuxcompat prompt off` = state\noprompt.
+
 ## Gotchas
+- `Split-Path -LiteralPath x -Parent` fails in PS 5.1 (parameter set error): use [IO.Path]::GetDirectoryName.
 - `function f { ... }` + `$args`, never [CmdletBinding] (would eat -e/-v as common params).
 - `_lc_args` returns `, $array`: assign it, don't wrap in @() (made a nested array once).
 - PS 5.1 pipes into programs using Console.InputEncoding: a UTF-8 one with BOM prefixed the first
@@ -38,6 +46,10 @@ Windows port of `..\LinuxCompat` (macOS zsh). Linux/bash commands in Windows Pow
   without `call` (control never returns). So bin is appended to PATH and those names are macros.
 - cmd: `call x.cmd +%Y` expands % twice; date macro/wrapper don't use call.
 - run.ps1 reads stdin only for text filters: an open-but-idle stdin pipe hung `free` forever.
+- 2026-11-03: install.ps1 run from inside the Claude desktop app wrote the cmd AutoRun into the app's
+  sandboxed registry view: cmd started from the app saw it, cmd from Start/Win+R (Explorer) did NOT
+  (`reg query` there: key not found). Profile file + execution policy were real. The user must run
+  install.ps1 (or the `reg add`) from their own window. Check with a cmd opened from Start menu.
 
 ## Testing
 - `tests\run-tests.ps1` (`linuxcompat test`): GNU and native modes, PS passthrough, builtins,

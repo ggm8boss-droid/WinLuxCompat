@@ -35,6 +35,7 @@ built-in PowerShell versions cover the common flags.
 | `linuxcompat status` | what's active: GNU tools, sudo mode, execution policy, cmd hook |
 | `linuxcompat debug on` / `off` | show each translation, dimmed: `[linux-compat] -> GNU grep -rn x .` |
 | `linuxcompat gnu off` / `on` | use only the PowerShell versions / use GNU tools again |
+| `linuxcompat prompt off` / `on` | Git Bash style prompt with the git branch (both shells, new windows). In cmd it refreshes after `cd`, `pushd`, `popd`, `git` and drive changes like `e:` |
 | `linuxcompat test` | self-test (send the output if something's wrong) |
 | `linuxcompat off` / `on` | disable / re-enable for new windows |
 | `linuxcompat uninstall` | remove the profile block and the cmd hook |

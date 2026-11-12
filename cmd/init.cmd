@@ -29,5 +29,7 @@ set "_lc_has="
 rem cd, mkdir -p, date are cmd built-ins and find, sort, timeout, ping... are Windows programs, so
 rem those go through doskey macros (typed commands only; scripts keep the Windows ones).
 doskey /macrofile="%LC_HOME%\cmd\macros.doskey"
+rem Git Bash style prompt with the git branch (the cd/git/... macros refresh it).
+call "%LC_HOME%\cmd\prompt.cmd"
 if exist "%USERPROFILE%\.bash_aliases" call "%LC_HOME%\bin\source.cmd" "%USERPROFILE%\.bash_aliases"
 exit /b 0

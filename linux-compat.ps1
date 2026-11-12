@@ -25,6 +25,13 @@ function global:linuxcompat {
                 default { if ($global:LC_GNU) { "on ($global:LC_GNU)" } else { 'off' } }
             }
         }
+        'prompt' {
+            switch ($a[1]) {
+                'on' { & $st 'noprompt' $false; 'linux-compat: Git Bash style prompt on (new PowerShell and cmd windows)' }
+                'off' { & $st 'noprompt' $true; 'linux-compat: prompt off, new windows keep the normal PowerShell/cmd prompt' }
+                default { if (_lc_state 'noprompt') { 'off' } else { 'on' } }
+            }
+        }
         'off' { & $st 'disabled' $true; 'linux-compat: disabled for new PowerShell and cmd windows (`linuxcompat on` to re-enable)' }
         'on' { & $st 'disabled' $false; 'linux-compat: enabled for new windows' }
         'status' {
@@ -43,7 +50,7 @@ function global:linuxcompat {
         'test' { & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File (Join-Path $global:LC_HOME 'tests\run-tests.ps1') @($a | Select-Object -Skip 1) }
         'install' { & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File (Join-Path $global:LC_HOME 'install.ps1') }
         'uninstall' { & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File (Join-Path $global:LC_HOME 'uninstall.ps1') }
-        default { 'usage: linuxcompat status | debug on|off | gnu on|off | on | off | test | install | uninstall' }
+        default { 'usage: linuxcompat status | debug on|off | gnu on|off | prompt on|off | on | off | test | install | uninstall' }
     }
 }
 
@@ -57,6 +64,7 @@ foreach ($n in 'curl', 'wget', 'kill', 'ps', 'echo', 'pwd', 'cd', 'man', 'sleep'
 }
 
 if (-not $NonInteractive) {
+    if (-not (_lc_state 'noprompt')) { . (Join-Path $PSScriptRoot 'lib\prompt.ps1') }
     _lc_install_readline
     $ba = Join-Path $HOME '.bash_aliases'
     if (Test-Path -LiteralPath $ba) { source $ba }
